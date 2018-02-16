@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script type="text/javascript" language="javascript">
+
+function find() {
+var city=document.getElementById("city").value;
+var url="https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22"+ city + "%22)&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+var r=new XMLHttpRequest();
+r.open("GET", url , false);
+r.send(); 
+var myxml= r.responseXML;
+var x = myxml.getElementsByTagName("yweather:condition")[0];
+var tmp = x.getAttribute("temp");
+if(document.getElementById("r1").checked){
+	alert(tmp+"~F");
+}else{
+	var cel = Math.round((tmp-32)*(0.5556));
+	alert(cel+"~C");
+}
+
+}
+</script>
+</head>
+<body bgcolor="yellow">
+<br/>
+<h3><center><u>Using City Name</u></center></h3><br/>
+<form>	
+	<table><tr><td>City:</td><td><input type="text" id="city"/></td></tr>
+	<tr><td><input type="radio" name="radiob" id="r1" value="F" checked/>Fahrenheit<td><input type="radio" name="radiob" id="r2" value="C"/>Centigrade</td></tr>
+	<tr><td colspan=2><center><button type="submit" onclick="javascript:find()">GET</button></center></td></tr>
+	</table>
+</form>
+<br/><br/>
+City like:<br/><br/><font size="2">Delhi<br/>Indore<br/>Bangalore<br/>Dallas</font>
+<br/><br/>
+<font size="3" color="red">if you entered wrong than nothing to show</font>
+</body>
+</html>
